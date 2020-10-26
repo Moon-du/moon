@@ -22,7 +22,7 @@
 
 # 3.找出一个列表中，只出现了一次的数字，并且保持原来的次序，例如[1,2,1,3,2,5]结果为[3,5]
 # list2 = [1, 2, 1, 3, 2, 5]
-# for i in range(len(list2)):
+# for i in list2:
 #     if list2.count(i) == 1:
 #         print(i)
 
@@ -44,11 +44,18 @@
 #             break
 #     else:
 #         print(i, end=' ')
+# for i in range(2, n):
+#     num = 0
+#     for j in range(2, i):
+#         if i % j == 0:
+#             num += 1
+#     if num < 1:
+#         print(i, end=' ')
 
 # 6. 水仙花数：水仙花数是指一个 n 位数 ( n 大于等于 3 )，它的每个位上的数字的 n 次幂之和等于它本身。
 # # （例如：1的3次方 + 5的三次方 + 3三次方 = 153）。根据这个要求，打印所有三位数的水仙花数。
 
-# for num in range(100, 999):
+# for num in range(100, 1000):
 #     g = (num % 10)
 #     s = (num // 10 % 10)
 #     b = (num // 100 % 10)
@@ -56,18 +63,20 @@
 #     if g ** 3 + s ** 3 + b ** 3 == num:
 #         print(num)
 
+# l6 = list(range(100, 1000))
+# for i in l6:
+#     x = tuple(str(i))
+#     if int(x[0]) ** 3 + int(x[1]) ** 3 + int(x[2]) ** 3 == i:
+#         print(i)
 # 7.一球从100米高度自由落下，每次落地后反跳回原高度的一半；
 # # 再落下，求它在 第10次落地时，共经过多少米？第10次反弹多高？
 # h = 100
-# sum = 0
-# for i in range(10):
+# sum = h
+# for i in range(9):
 #     h /= 2
-#     if i == 0:
-#         sum = h
-#     else:
-#         sum += h / 2
-# print(sum)
-# print(h)
+#     sum += h * 2
+# print(sum, h/2)
+
 # 8. 随机产生20个100-200之间的正整数存放到列表中，
 # 并求列表中的所有元素最大值、最小值、平均值，然后将各元素的与平均值的差组成一个列表
 # list3 = []
