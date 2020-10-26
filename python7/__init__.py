@@ -1,13 +1,11 @@
 # _*_ coding: UTF-8 _*_
-# @Time     : 2020/10/20 上午 11:33
-# @Author   : Li Jie
-# @Site     : http://www.cdtest.cn/
-# @File     : __init__.py.py
+# @Time : 2020/10/26 14:08
+# @Author : moon
+# @Site : www.ysbzc.com
+# @File : page_test.py
 # @Software : PyCharm
+
 import random
-
-
-
 
 def room():
     room = []

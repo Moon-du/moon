@@ -1,8 +1,8 @@
 # _*_ coding: UTF-8 _*_
-# @Time     : 2020/10/23 下午 05:10
-# @Author   : Li Jie
-# @Site     : http://www.cdtest.cn/
-# @File     : prac.py
+# @Time : 2020/10/26 14:08
+# @Author : moon
+# @Site : www.ysbzc.com
+# @File : page_test.py
 # @Software : PyCharm
 
 # 自动化的方式实现京东的购物流程
@@ -10,71 +10,79 @@
 # 点击销量前5的产品，切换销量第二的产品，选择产品参数，包括数量，点击购物车，
 # 完成登录流程
 
+
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 import time
+from selenium.webdriver.support.select import Select
 
 
-class webJd():
-    def __init__(self):
-        self.driver = webdriver.Chrome()
+# 内嵌网页的切换
 
+class JDTest():
     def setUp(self):
+        self.driver = webdriver.Chrome()
         self.driver.maximize_window()
 
     def test(self):
-        self.driver.get('https://www.jd.com/')
-        self.driver.find_element_by_id('key').send_keys('键盘')
-        self.driver.find_element_by_xpath('//*[@clstag="h|keycount|head|search_a"]').click()
+        self.driver.get(r'https://www.jd.com/')
+
+        # 搜索框输入
+        self.driver.find_element(By.ID, 'key').send_keys('mate40')
+        # self.driver.find_element_by_id('key')
+
+        # 点击搜索
+        self.driver.find_element(By.CLASS_NAME, 'button').click()
+
+        # 点击销量排行
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, '//*[@id="J_filter"]/div[1]/div[1]/a[2]').click()
+
+        # 打开销量前5的产品
+        time.sleep(1)
+        for i in range(1, 6):
+            self.driver.find_element(By.XPATH, f'//*[@id="J_goodsList"]/ul/li[{i}]/div/div[1]').click()
         time.sleep(2)
 
-        # self.driver.find_element_by_css_selector(
-        #     '#J_selector > div:nth-child(2) > div > div.sl-value > div.sl-v-list > ul > li:nth-child(1) > a').click()
-        # self.driver.find_element_by_link_text('销量').click()
-        # self.driver.find_element_by_css_selector(
-        #     '#J_goodsList > ul > li:nth-child(2) > div > div.p-img > a').click()  # 选择商品
-        #
-        # handles = self.driver.window_handles
+        # 窗口切换到销量第二
+        handles = self.driver.window_handles
         # for handle in handles:
         #     self.driver.switch_to.window(handle)
-        #     if self.driver.title == "【英特尔i7-10700K】英特尔（Intel）i7-10700K 8核16线程 盒装CPU处理器【行情 报价 价格 评测】-京东":
+        #     if self.driver.current_url=='https://item.jd.com/100012014948.html':
         #         break
-        #
-        # self.driver.find_element_by_xpath(
-        #     '/html/body/div[6]/div/div[2]/div[5]/div[8]/div[1]/div[2]/div[1]/a/i').click()  # 选择规格
-        self.driver.find_element_by_css_selector(
-            '#J_filter > div.f-line.top > div.f-sort > a:nth-child(2) > span').click()
+        # time.sleep(2)
+        self.driver.switch_to.window(handles[-2])
         time.sleep(2)
-        self.driver.find_element_by_css_selector('#J_goodsList > ul > li:nth-child(2) > div > div.p-img > a').click()
-        time.sleep(2)
-        handles = self.driver.window_handles
-        for handle in handles:
-            self.driver.switch_to.window(handle)
-            if self.driver.title == "【小米小米无线键鼠套装】小米 无线键鼠套装 简洁轻薄 全尺寸104键键盘 舒适鼠标 2.4G无线传输 电脑办公套装【行情 报价 价格 评测】-京东":
-                break
-        time.sleep(2)
-        self.driver.find_element_by_css_selector('#choose-attr-1 > div.dd > div:nth-child(1) > a').click()
-        time.sleep(3)
 
+        # 选择颜色
+        self.driver.find_element(By.XPATH, '//*[@id="choose-attr-1"]/div[2]/div[4]').click()
+        time.sleep(2)
+
+        # 点击数量4下
         for i in range(4):
-            self.driver.find_element_by_xpath(
-                '/html/body/div[6]/div/div[2]/div[5]/div[17]/div/div/a[2]').click()  # 选择数量
+            self.driver.find_element(By.CLASS_NAME, 'btn-add').click()
+        time.sleep(2)
 
-        self.driver.find_element_by_link_text('加入购物车').click()
+        # 点击支付定金
+        self.driver.find_element(By.ID, 'btn-reservation').click()
+        time.sleep(2)
 
-        self.driver.find_element_by_link_text('账户登录').click()
-        time.sleep(1)
-        self.driver.find_element_by_id('loginname').send_keys('test')
-        self.driver.find_element_by_id('nloginpwd').send_keys('123456')
-        self.driver.find_element_by_id('nloginpwd').click()
+        # 点击账号登录
+        self.driver.find_element(By.LINK_TEXT, '账户登录').click()
 
-        time.sleep(3)
+        # 输入账号和密码，点击登录
+        time.sleep(0.5)
+        self.driver.find_element(By.ID, 'loginname').send_keys('test')
+        self.driver.find_element(By.ID, 'nloginpwd').send_keys('test')
+        self.driver.find_element(By.ID, 'loginsubmit').click()
+        time.sleep(2)
 
     def tearDown(self):
         self.driver.quit()
 
 
-if __name__ == "__main__":
-    jd = webJd()
-    jd.setUp()
-    jd.test()
-    jd.tearDown()
+if __name__ == '__main__':
+    test = JDTest()
+    test.setUp()
+    test.test()
+    test.tearDown()

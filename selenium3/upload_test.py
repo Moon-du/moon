@@ -1,9 +1,10 @@
 # _*_ coding: UTF-8 _*_
-# @Time     : 2020/10/23 上午 11:21
-# @Author   : Li Jie
-# @Site     : http://www.cdtest.cn/
-# @File     : upload_test.py
+# @Time : 2020/10/26 14:08
+# @Author : moon
+# @Site : www.ysbzc.com
+# @File : page_test.py
 # @Software : PyCharm
+
 
 # 文件上传
 # 1.上传按键是<input>,直接对<input>sendkeys，文件的路径

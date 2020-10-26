@@ -1,10 +1,9 @@
 # _*_ coding: UTF-8 _*_
-# @Time     : 2020/10/23 下午 02:41
-# @Author   : Li Jie
-# @Site     : http://www.cdtest.cn/
-# @File     : alert_test.py
+# @Time : 2020/10/26 14:08
+# @Author : moon
+# @Site : www.ysbzc.com
+# @File : page_test.py
 # @Software : PyCharm
-
 # 弹出警告框的处理
 
 # 弹出警告框当弹出时，无法操作页面，警告框是属于浏览器定义的，无法通过元素定位的方式操作

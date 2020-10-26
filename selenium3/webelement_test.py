@@ -1,8 +1,8 @@
 # _*_ coding: UTF-8 _*_
-# @Time     : 2020/10/22 上午 11:11
-# @Author   : Li Jie
-# @Site     : http://www.cdtest.cn/
-# @File     : webelement_test.py
+# @Time : 2020/10/26 14:08
+# @Author : moon
+# @Site : www.ysbzc.com
+# @File : page_test.py
 # @Software : PyCharm
 
 from selenium import webdriver
