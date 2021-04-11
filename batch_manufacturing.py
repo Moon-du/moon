@@ -100,9 +100,9 @@ def faker_maker(i):
     # 账户
     account = f.credit_card_number()
     # 账户生效时间
-    account_effective_time = f.date_between(start_date="-1y", end_date="+30y")
+    account_effective_time = f.date_between(start_date="-1y", end_date="today")
     # 组织
-    organize = f.company()
+    organize = organization
     # 岗位
     post = f.job()
     # 职务
@@ -147,7 +147,7 @@ def faker_list_add(num):
 
 if __name__ == "__main__":
     start_time = time.time()
-    write_excel(r'F:\ym', faker_list_add(100))
+    write_excel(r'F:\ym', faker_list_add(10))
     end_time = time.time()
     total_time = end_time - start_time
     print(f'用时{total_time}秒')
