@@ -147,7 +147,7 @@ def faker_list_add(num):
 
 if __name__ == "__main__":
     start_time = time.time()
-    write_excel(r'F:\ym', faker_list_add(10))
+    write_excel(r'F:\ym', faker_list_add(1000))
     end_time = time.time()
     total_time = end_time - start_time
     print(f'用时{total_time}秒')

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/main" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ee6915fd-a0ed-4922-bb17-cdb7c1bf5c94" name="默认的" comment="修改生效时间最晚为当前时间">
+      <change afterPath="$PROJECT_DIR$/.idea/Moon-du.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copyright/ym.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch_manufacturing.py" beforeDir="false" afterPath="$PROJECT_DIR$/batch_manufacturing.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1r1EytvkNKr8XzBEu0QG4LDbFe3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RunManager">
+    <configuration name="batch_manufacturing" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Moon-du" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/batch_manufacturing.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.batch_manufacturing" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ee6915fd-a0ed-4922-bb17-cdb7c1bf5c94" name="默认的" comment="" />
+      <created>1618135454071</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1618135454071</updated>
+    </task>
+    <task id="LOCAL-00001" summary="批量制造数据">
+      <created>1618136447893</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1618136447893</updated>
+    </task>
+    <task id="LOCAL-00002" summary="批量制造数据">
+      <created>1618151528047</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1618151528047</updated>
+    </task>
+    <task id="LOCAL-00003" summary="修改生效时间最晚为当前时间">
+      <created>1618151942885</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1618151942885</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="批量制造数据" />
+    <MESSAGE value="修改生效时间最晚为当前时间" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改生效时间最晚为当前时间" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1117" y="499" key="#Plugins" timestamp="1618140045466">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1117" y="499" key="#Plugins/0.0.2560.1400@0.0.2560.1400" timestamp="1618140045466" />
+    <state x="979" y="513" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1618137778044">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="979" y="513" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1618137778044" />
+    <state x="960" y="435" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1618237702246">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="960" y="435" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1618237702246" />
+    <state x="1400" y="540" key="FileChooserDialogImpl" timestamp="1618237667017">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1400" y="540" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1618237667017" />
+    <state width="1269" height="396" key="GridCell.Tab.0.bottom" timestamp="1618152730387">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1269" height="396" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1618152730387" />
+    <state width="1269" height="396" key="GridCell.Tab.0.center" timestamp="1618152730387">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1269" height="396" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1618152730387" />
+    <state width="1269" height="396" key="GridCell.Tab.0.left" timestamp="1618152730387">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1269" height="396" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1618152730387" />
+    <state width="1269" height="396" key="GridCell.Tab.0.right" timestamp="1618152730387">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1269" height="396" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1618152730387" />
+    <state x="965" y="607" key="SettingsEditor" timestamp="1618237675037">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="965" y="607" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1618237675037" />
+    <state x="1212" y="532" key="Vcs.Push.Dialog.v2" timestamp="1618152332175">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1212" y="532" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1618152332175" />
+    <state x="1323" y="757" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1618136295837">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1323" y="757" key="git4idea.remote.GitConfigureRemotesDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1618136295837" />
+    <state x="1254" y="836" width="590" height="282" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1618237672980">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1254" y="836" width="590" height="282" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1618237672980" />
+  </component>
+</project>
