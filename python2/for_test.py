@@ -84,4 +84,3 @@ for i in range(1, 10):
     for j in range(1, i + 1):
         sum = i * j
         print(f'{j}x{i}={sum:2d}', end=' ')
-    print()
