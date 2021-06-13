@@ -27,7 +27,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee6915fd-a0ed-4922-bb17-cdb7c1bf5c94" name="默认的" comment="修改生效时间最晚为当前时间">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generate_random_name.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_random_name.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -171,7 +170,21 @@
       <option name="project" value="LOCAL" />
       <updated>1623570960778</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="修改生效时间最晚为当前时间">
+      <created>1623571066311</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1623571066311</updated>
+    </task>
+    <task id="LOCAL-00006" summary="修改生效时间最晚为当前时间">
+      <created>1623571243877</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1623571243877</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
