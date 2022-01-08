@@ -84,11 +84,13 @@ class Listening:
             "四价": self.f_appointment_notification_status,
         }
         for i in range(1, 6):
-            department_name, department_subscribe, department_lack = False, False, False
-            name_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView74']"
+            department_name, vaccines_name, department_subscribe, department_lack = False, False, False, False
             subscribe_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView70']"
             lack_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView71']"
+            vaccines_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView72']"
+            name_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView74']"
             try:
+                vaccines_name = self.wait.until(ec.presence_of_element_located((By.XPATH, vaccines_xpath))).text
                 department_name = self.wait.until(ec.presence_of_element_located((By.XPATH, name_xpath))).text
             except self.excepts as error_massage:
                 self.except_handling(vaccines, error_massage)
@@ -106,16 +108,16 @@ class Listening:
                 self.except_handling(vaccines, error_massage)
             if department_subscribe or department_lack:
                 self.logging.info(f"{department_name}需订阅或缺货")
-                notification_status_info[vaccines][department_name] = 0
+                notification_status_info[vaccines][department_name + vaccines_name] = 0
             else:
                 self.logging.info(f"{department_name}可预约")
                 if department_name in notification_status_info[vaccines]:
-                    if notification_status_info[vaccines][department_name] == 0:
+                    if notification_status_info[vaccines][department_name + vaccines_name] == 0:
                         Notification(self.city).send_appointment_notification(vaccines, department_name)
-                        notification_status_info[vaccines][department_name] = 1
+                        notification_status_info[vaccines][department_name + vaccines_name] = 1
                 else:
                     Notification(self.city).send_appointment_notification(vaccines, department_name)
-                    notification_status_info[vaccines][department_name] = 1
+                    notification_status_info[vaccines][department_name + vaccines_name] = 1
 
     def main(self):
         """开始监听"""
