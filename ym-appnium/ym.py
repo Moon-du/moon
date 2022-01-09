@@ -1,0 +1,218 @@
+import datetime
+import json
+import logging
+import time
+
+import requests
+import selenium.common.exceptions
+from appium import webdriver
+from jsonpath import jsonpath
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import WebDriverWait
+
+
+class Notification:
+    """钉钉群通知"""
+
+    def __init__(self, city):
+        """初始化通知属性"""
+        self.city = city
+        self.send_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.notification_urls = {
+            "test": "https://oapi.dingtalk.com/robot/send?access_token"
+                    "=0354ddbdf68e36be9e931f2555ba4b4bc4c9751af986dd9497206997cdd71968 ",
+            "formal-9": "https://oapi.dingtalk.com/robot/send?access_token"
+                        "=649a092161ceda91c94ec436ca32b5439d60af7287447e8d0767952073723b4b ",
+            "formal-4": "https://oapi.dingtalk.com/robot/send?access_token"
+                        "=55f4877383250813c2bc9684c977c01eea81f80f9bb92e5f38ce8be05b0cbeac",
+            "debug": "https://oapi.dingtalk.com/robot/send?access_token"
+                     "=2fb637568180850691c13455329bf1122de97b284980f15862a95d5c55af961d",
+        }
+        logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=logging.INFO)
+        self.isTest = True
+
+    def send_appointment_notification(self, vaccines, department):
+        """发送医院可预约通知"""
+        if vaccines == 3:
+            url = self.notification_urls["test" if self.isTest else "formal-4"]
+        else:
+            url = self.notification_urls["test" if self.isTest else "formal-9"]
+        data = {"msgtype": "text",
+                "text": {
+                    "content":
+                        f"{self.city}:  {department}\n"
+                        "\n"
+                        f"时间:  {self.send_time}\n"
+                },
+                "at": {"isAtAll": "false"}
+                }
+        headers = {
+            'Content-Type': 'application/json',
+            'Connection': 'close',
+        }
+        res = requests.post(url, json.dumps(data), headers=headers).json()
+        errmsg = jsonpath(res, "$.errmsg")
+        if 'ok' in errmsg:
+            logging.info(f"{self.city}-{department}发送可预约通知成功")
+        else:
+            logging.error(f"{self.city}-{department}发送可预约通知失败，请检查~\n"
+                          f"错误信息：{res}")
+
+    def send_error_notification(self, message):
+        """发送服务异常通知"""
+        url = self.notification_urls["test"]
+        data = {"msgtype": "text",
+                "text": {
+                    "content":
+                        f"服务异常提醒\n"
+                        "\n"
+                        f"{message}\n"
+                        f"时间:  {self.send_time}\n"
+                },
+                "at": {"isAtAll": "false"}
+                }
+        headers = {
+            'Content-Type': 'application/json',
+            'Connection': 'close',
+        }
+        res = requests.post(url, json.dumps(data), headers=headers).json()
+        errmsg = jsonpath(res, "$.errmsg")
+        if 'ok' in errmsg:
+            logging.info(f"{self.city}服务异常提醒发送成功")
+        else:
+            logging.error(f"{self.city}服务异常提醒发送失败，请检查~\n"
+                          f"错误信息：{res}")
+
+
+class Ym:
+    def __init__(self):
+        """初始化连接属性"""
+        self.n_appointment_notification_status = {}
+        self.f_appointment_notification_status = {}
+        self.appnium_server = 'http://localhost:4723/wd/hub'
+        self.desired_caps = {
+            "platformName": "Android",
+            "deviceName": "a0af2699",
+            "appPackage": "com.matthew.yuemiao",
+            "appActivity": "com.matthew.yuemiao.ui.activity.HomeActivity",
+        }
+        self.driver = webdriver.Remote(self.appnium_server, self.desired_caps)
+        self.wait = WebDriverWait(self.driver, 5)
+        self.excepts = (
+            selenium.common.exceptions.TimeoutException,
+            selenium.common.exceptions.WebDriverException,
+            selenium.common.exceptions.StaleElementReferenceException,
+            selenium.common.exceptions.NoSuchElementException,
+            selenium.common.exceptions.InvalidElementStateException,
+        )
+        logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=logging.INFO)
+        self.CITYS, self.VACCINES = ("济南", "青岛"), (3, 4)
+
+    def except_handling(self, city, error_massage):
+        """异常处理"""
+        message = f"服务运行异常，尝试自动重启服务~\n异常信息：{error_massage}"
+        logging.error(message)
+        Notification(city).send_error_notification(message)
+        self.start_listening()
+
+    def switch_city(self, city):
+        """切换城市"""
+        try:
+            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/city_tv"))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/search"))).set_text(city)
+            self.wait.until(
+                ec.presence_of_element_located((By.XPATH, f"//android.widget.TextView[@text='{city}市']"))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/tv_confirm"))).click()
+        except self.excepts as error_massage:
+            self.except_handling(city, error_massage)
+        time.sleep(1)
+
+    def switch_vaccines(self, vaccines):
+        """切换疫苗"""
+        try:
+            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/textView56"))).click()
+            self.wait.until(ec.presence_of_element_located(
+                (By.XPATH,
+                 f"//androidx.recyclerview.widget.RecyclerView/android.widget.TextView[{vaccines}]"))).click()
+        except self.excepts as error_massage:
+            self.except_handling(vaccines, error_massage)
+        time.sleep(1)
+
+    def go_departments(self, city, vaccines):
+        """进入医院列表"""
+        try:
+            # 开启定位
+            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/go"))).click()
+            self.wait.until(ec.presence_of_element_located(
+                (By.ID, "com.lbe.security.miui:id/permission_allow_foreground_only_button"))).click()
+            # 选择地址
+            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/search"))).set_text(city)
+            self.wait.until(
+                ec.presence_of_element_located((By.XPATH, f"//android.widget.TextView[@text='{city}市']"))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/tv_confirm"))).click()
+            # 选择HPV疫苗
+            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/imageView17"))).click()
+            self.wait.until(ec.presence_of_element_located(
+                (By.XPATH,
+                 f"//androidx.cardview.widget.CardView[{vaccines}]/android.view.ViewGroup/android.widget.ImageView"))).click()
+        except self.excepts as error_massage:
+            self.except_handling(city, error_massage)
+
+    def get_department_info(self, city, vaccines):
+        """获取医院信息，疫苗到货后发送通知"""
+        notification_status_info = {
+            3: self.f_appointment_notification_status,
+            4: self.n_appointment_notification_status,
+        }
+        for i in range(1, 6):
+            department_name, vaccines_name, department_subscribe, department_lack = False, False, False, False
+            subscribe_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView70']"
+            lack_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView71']"
+            vaccines_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView72']"
+            name_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView74']"
+            try:
+                vaccines_name = self.wait.until(ec.presence_of_element_located((By.XPATH, vaccines_xpath))).text
+                department_name = self.wait.until(ec.presence_of_element_located((By.XPATH, name_xpath))).text
+            except self.excepts as error_massage:
+                self.except_handling(vaccines, error_massage)
+            try:
+                department_subscribe = self.driver.find_element(By.XPATH, subscribe_xpath).is_displayed()
+            except selenium.common.exceptions.NoSuchElementException:
+                pass
+            except self.excepts as error_massage:
+                self.except_handling(vaccines, error_massage)
+            try:
+                department_lack = self.driver.find_element(By.XPATH, lack_xpath).is_displayed()
+            except selenium.common.exceptions.NoSuchElementException:
+                pass
+            except self.excepts as error_massage:
+                self.except_handling(vaccines, error_massage)
+            if department_subscribe or department_lack:
+                logging.info(f"{city}-{vaccines}-{department_name}需订阅或缺货")
+                notification_status_info[vaccines][department_name + vaccines_name] = 0
+            else:
+                logging.info(f"{city}-{vaccines}-{department_name}可预约")
+                if department_name + vaccines_name in notification_status_info[vaccines]:
+                    if notification_status_info[vaccines][department_name + vaccines_name] == 0:
+                        Notification(city).send_appointment_notification(vaccines, department_name)
+                        notification_status_info[vaccines][department_name + vaccines_name] = 1
+                else:
+                    Notification(city).send_appointment_notification(vaccines, department_name)
+                    notification_status_info[vaccines][department_name + vaccines_name] = 1
+
+    def start_listening(self):
+        """开始监听"""
+        self.go_departments(self.CITYS[0], self.VACCINES[0])
+        rounds = 1
+        while True:
+            self.get_department_info(self.CITYS[0], self.VACCINES[0])
+            self.switch_vaccines(self.VACCINES[1])
+            self.get_department_info(self.CITYS[0], self.VACCINES[1])
+            self.switch_vaccines(self.VACCINES[0])
+            logging.info(f"--------------------------疫苗监听服务已运行{rounds}次-------------------------\n\n")
+            rounds += 1
+
+
+if __name__ == '__main__':
+    Ym().start_listening()
