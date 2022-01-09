@@ -30,7 +30,7 @@ class Notification:
                      "=2fb637568180850691c13455329bf1122de97b284980f15862a95d5c55af961d",
         }
         logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=logging.INFO)
-        self.isTest = True
+        self.isTest = False
 
     def send_appointment_notification(self, vaccines, department):
         """发送医院可预约通知"""
@@ -88,8 +88,6 @@ class Notification:
 class Ym:
     def __init__(self):
         """初始化连接属性"""
-        self.n_appointment_notification_status = {}
-        self.f_appointment_notification_status = {}
         self.appnium_server = 'http://localhost:4723/wd/hub'
         self.desired_caps = {
             "platformName": "Android",
@@ -107,6 +105,8 @@ class Ym:
             selenium.common.exceptions.InvalidElementStateException,
         )
         logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=logging.INFO)
+        self.n_appointment_notification_status = {}
+        self.f_appointment_notification_status = {}
         self.CITYS, self.VACCINES = ("济南", "青岛"), (3, 4)
 
     def except_handling(self, city, error_massage):
@@ -118,44 +118,50 @@ class Ym:
 
     def switch_city(self, city):
         """切换城市"""
+        city_tv_id = "com.matthew.yuemiao:id/city_tv"
+        search_city_id = "com.matthew.yuemiao:id/search"
+        searched_city_xpath = f"//android.widget.TextView[@text='{city}市']"
+        tv_confirm_id = "com.matthew.yuemiao:id/tv_confirm"
         try:
-            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/city_tv"))).click()
-            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/search"))).set_text(city)
-            self.wait.until(
-                ec.presence_of_element_located((By.XPATH, f"//android.widget.TextView[@text='{city}市']"))).click()
-            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/tv_confirm"))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, city_tv_id))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, search_city_id))).set_text(city)
+            self.wait.until(ec.presence_of_element_located((By.XPATH, searched_city_xpath))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, tv_confirm_id))).click()
         except self.excepts as error_massage:
             self.except_handling(city, error_massage)
         time.sleep(1)
 
     def switch_vaccines(self, vaccines):
         """切换疫苗"""
+        hpv_l_id = "com.matthew.yuemiao:id/textView56"
+        hpv_f_xpath = f"//androidx.recyclerview.widget.RecyclerView/android.widget.TextView[{vaccines}]"
         try:
-            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/textView56"))).click()
-            self.wait.until(ec.presence_of_element_located(
-                (By.XPATH,
-                 f"//androidx.recyclerview.widget.RecyclerView/android.widget.TextView[{vaccines}]"))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, hpv_l_id))).click()
+            self.wait.until(ec.presence_of_element_located((By.XPATH, hpv_f_xpath))).click()
         except self.excepts as error_massage:
             self.except_handling(vaccines, error_massage)
         time.sleep(1)
 
     def go_departments(self, city, vaccines):
         """进入医院列表"""
+        to_open_id = "com.matthew.yuemiao:id/go"
+        allow_id = "com.lbe.security.miui:id/permission_allow_foreground_only_button"
+        search_city_id = "com.matthew.yuemiao:id/search"
+        hpv_h_xpath = f"//androidx.cardview.widget.CardView[{vaccines}]/android.view.ViewGroup/android.widget.ImageView"
+        searched_city_xpath = f"//android.widget.TextView[@text='{city}市']"
+        tv_confirm_id = "com.matthew.yuemiao:id/tv_confirm"
+        hpv_icon_id = "com.matthew.yuemiao:id/imageView17"
         try:
             # 开启定位
-            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/go"))).click()
-            self.wait.until(ec.presence_of_element_located(
-                (By.ID, "com.lbe.security.miui:id/permission_allow_foreground_only_button"))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, to_open_id))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, allow_id))).click()
             # 选择地址
-            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/search"))).set_text(city)
-            self.wait.until(
-                ec.presence_of_element_located((By.XPATH, f"//android.widget.TextView[@text='{city}市']"))).click()
-            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/tv_confirm"))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, search_city_id))).set_text(city)
+            self.wait.until(ec.presence_of_element_located((By.XPATH, searched_city_xpath))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, tv_confirm_id))).click()
             # 选择HPV疫苗
-            self.wait.until(ec.presence_of_element_located((By.ID, "com.matthew.yuemiao:id/imageView17"))).click()
-            self.wait.until(ec.presence_of_element_located(
-                (By.XPATH,
-                 f"//androidx.cardview.widget.CardView[{vaccines}]/android.view.ViewGroup/android.widget.ImageView"))).click()
+            self.wait.until(ec.presence_of_element_located((By.ID, hpv_icon_id))).click()
+            self.wait.until(ec.presence_of_element_located((By.XPATH, hpv_h_xpath))).click()
         except self.excepts as error_massage:
             self.except_handling(city, error_massage)
 
@@ -166,24 +172,24 @@ class Ym:
             4: self.n_appointment_notification_status,
         }
         for i in range(1, 6):
-            department_name, vaccines_name, department_subscribe, department_lack = False, False, False, False
-            subscribe_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView70']"
-            lack_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView71']"
-            vaccines_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView72']"
-            name_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView74']"
+            department_name, vaccines_name, department_subscribe, department_lack = None, None, False, False
+            department_subscribe_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView70']"
+            department_lack_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView71']"
+            vaccines_name_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView72']"
+            department_name_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView74']"
             try:
-                vaccines_name = self.wait.until(ec.presence_of_element_located((By.XPATH, vaccines_xpath))).text
-                department_name = self.wait.until(ec.presence_of_element_located((By.XPATH, name_xpath))).text
+                vaccines_name = self.wait.until(ec.presence_of_element_located((By.XPATH, vaccines_name_xpath))).text
+                department_name = self.wait.until(ec.presence_of_element_located((By.XPATH, department_name_xpath))).text
             except self.excepts as error_massage:
                 self.except_handling(vaccines, error_massage)
             try:
-                department_subscribe = self.driver.find_element(By.XPATH, subscribe_xpath).is_displayed()
+                department_subscribe = self.driver.find_element(By.XPATH, department_subscribe_xpath).is_displayed()
             except selenium.common.exceptions.NoSuchElementException:
                 pass
             except self.excepts as error_massage:
                 self.except_handling(vaccines, error_massage)
             try:
-                department_lack = self.driver.find_element(By.XPATH, lack_xpath).is_displayed()
+                department_lack = self.driver.find_element(By.XPATH, department_lack_xpath).is_displayed()
             except selenium.common.exceptions.NoSuchElementException:
                 pass
             except self.excepts as error_massage:
