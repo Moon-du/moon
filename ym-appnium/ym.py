@@ -11,6 +11,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
+logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=logging.INFO)
+
 
 class Notification:
     """钉钉群通知"""
@@ -23,13 +25,12 @@ class Notification:
             "test": "https://oapi.dingtalk.com/robot/send?access_token"
                     "=0354ddbdf68e36be9e931f2555ba4b4bc4c9751af986dd9497206997cdd71968 ",
             "formal-9": "https://oapi.dingtalk.com/robot/send?access_token"
-                        "=649a092161ceda91c94ec436ca32b5439d60af7287447e8d0767952073723b4b ",
+                        "=623c2eaeb43a541108bae75548c070626fc7a5c2f7403c75e95eeb661c6b42ef",
             "formal-4": "https://oapi.dingtalk.com/robot/send?access_token"
                         "=55f4877383250813c2bc9684c977c01eea81f80f9bb92e5f38ce8be05b0cbeac",
             "debug": "https://oapi.dingtalk.com/robot/send?access_token"
                      "=2fb637568180850691c13455329bf1122de97b284980f15862a95d5c55af961d",
         }
-        logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=logging.INFO)
         self.isTest = False
 
     def send_appointment_notification(self, vaccines, department):
@@ -85,6 +86,14 @@ class Notification:
                           f"错误信息：{res}")
 
 
+def except_handling(city, error_massage):
+    """异常处理"""
+    message = f"服务运行异常，尝试自动重启服务~\n异常信息：{error_massage}"
+    logging.error(message)
+    Notification(city).send_error_notification(message)
+    Ym().start_listening()
+
+
 class Ym:
     def __init__(self):
         """初始化连接属性"""
@@ -104,17 +113,9 @@ class Ym:
             selenium.common.exceptions.NoSuchElementException,
             selenium.common.exceptions.InvalidElementStateException,
         )
-        logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=logging.INFO)
         self.n_appointment_notification_status = {}
         self.f_appointment_notification_status = {}
         self.CITYS, self.VACCINES = ("济南", "青岛"), (3, 4)
-
-    def except_handling(self, city, error_massage):
-        """异常处理"""
-        message = f"服务运行异常，尝试自动重启服务~\n异常信息：{error_massage}"
-        logging.error(message)
-        Notification(city).send_error_notification(message)
-        self.start_listening()
 
     def switch_city(self, city):
         """切换城市"""
@@ -128,18 +129,19 @@ class Ym:
             self.wait.until(ec.presence_of_element_located((By.XPATH, searched_city_xpath))).click()
             self.wait.until(ec.presence_of_element_located((By.ID, tv_confirm_id))).click()
         except self.excepts as error_massage:
-            self.except_handling(city, error_massage)
+            except_handling(city, error_massage)
         time.sleep(1)
 
     def switch_vaccines(self, vaccines):
         """切换疫苗"""
         hpv_l_id = "com.matthew.yuemiao:id/textView56"
         hpv_f_xpath = f"//androidx.recyclerview.widget.RecyclerView/android.widget.TextView[{vaccines}]"
+        time.sleep(1)
         try:
             self.wait.until(ec.presence_of_element_located((By.ID, hpv_l_id))).click()
             self.wait.until(ec.presence_of_element_located((By.XPATH, hpv_f_xpath))).click()
         except self.excepts as error_massage:
-            self.except_handling(vaccines, error_massage)
+            except_handling(vaccines, error_massage)
         time.sleep(1)
 
     def go_departments(self, city, vaccines):
@@ -163,7 +165,7 @@ class Ym:
             self.wait.until(ec.presence_of_element_located((By.ID, hpv_icon_id))).click()
             self.wait.until(ec.presence_of_element_located((By.XPATH, hpv_h_xpath))).click()
         except self.excepts as error_massage:
-            self.except_handling(city, error_massage)
+            except_handling(city, error_massage)
 
     def get_department_info(self, city, vaccines):
         """获取医院信息，疫苗到货后发送通知"""
@@ -179,21 +181,22 @@ class Ym:
             department_name_xpath = f"//android.view.ViewGroup[{i}]/*[@resource-id='com.matthew.yuemiao:id/textView74']"
             try:
                 vaccines_name = self.wait.until(ec.presence_of_element_located((By.XPATH, vaccines_name_xpath))).text
-                department_name = self.wait.until(ec.presence_of_element_located((By.XPATH, department_name_xpath))).text
+                department_name = self.wait.until(
+                    ec.presence_of_element_located((By.XPATH, department_name_xpath))).text
             except self.excepts as error_massage:
-                self.except_handling(vaccines, error_massage)
+                except_handling(vaccines, error_massage)
             try:
                 department_subscribe = self.driver.find_element(By.XPATH, department_subscribe_xpath).is_displayed()
             except selenium.common.exceptions.NoSuchElementException:
                 pass
             except self.excepts as error_massage:
-                self.except_handling(vaccines, error_massage)
+                except_handling(vaccines, error_massage)
             try:
                 department_lack = self.driver.find_element(By.XPATH, department_lack_xpath).is_displayed()
             except selenium.common.exceptions.NoSuchElementException:
                 pass
             except self.excepts as error_massage:
-                self.except_handling(vaccines, error_massage)
+                except_handling(vaccines, error_massage)
             if department_subscribe or department_lack:
                 logging.info(f"{city}-{vaccines}-{department_name}需订阅或缺货")
                 notification_status_info[vaccines][department_name + vaccines_name] = 0
@@ -209,13 +212,13 @@ class Ym:
 
     def start_listening(self):
         """开始监听"""
-        self.go_departments(self.CITYS[0], self.VACCINES[0])
+        self.go_departments(self.CITYS[0], self.VACCINES[1])
         rounds = 1
         while True:
-            self.get_department_info(self.CITYS[0], self.VACCINES[0])
-            self.switch_vaccines(self.VACCINES[1])
             self.get_department_info(self.CITYS[0], self.VACCINES[1])
             self.switch_vaccines(self.VACCINES[0])
+            self.get_department_info(self.CITYS[0], self.VACCINES[0])
+            self.switch_vaccines(self.VACCINES[1])
             logging.info(f"--------------------------疫苗监听服务已运行{rounds}次-------------------------\n\n")
             rounds += 1
 
